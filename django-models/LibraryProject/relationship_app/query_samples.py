@@ -1,14 +1,22 @@
-from relationship_app.models import Author, Book
+# query_samples.py
 
-# Replace 'J.K. Rowling' with any author name you want to test
-author_name = "J.K. Rowling"
+from relationship_app.models import Library
 
-# Get the Author instance
-author = Author.objects.get(name=author_name)
+def list_books_in_library(library_name):
+    try:
+        # Get the library instance by name
+        library = Library.objects.get(name=library_name)
+        
+        # Get all books related to this library
+        books = library.books.all()
 
-# Get all books by that author
-books_by_author = Book.objects.filter(author=author)
+        # Print book titles
+        print(f"Books in '{library_name}':")
+        for book in books:
+            print(f"- {book.title}")
 
-# Optional: print for debugging
-for book in books_by_author:
-    print(book.title)
+    except Library.DoesNotExist:
+        print(f"Library with name '{library_name}' does not exist.")
+
+# Example usage
+list_books_in_library("Central Library")
