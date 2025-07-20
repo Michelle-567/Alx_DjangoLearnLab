@@ -1,22 +1,27 @@
-# query_samples.py
+from relationship_app.models import Author, Book, Library
 
-from relationship_app.models import Library
-
-def list_books_in_library(library_name):
+# ✅ Query all books by a specific author
+def list_books_by_author(author_name):
     try:
-        # Get the library instance by name
-        library = Library.objects.get(name=library_name)
-        
-        # Get all books related to this library
-        books = library.books.all()
-
-        # Print book titles
-        print(f"Books in '{library_name}':")
+        author = Author.objects.get(name=author_name)
+        books = Book.objects.filter(author=author)
+        print(f"Books by '{author_name}':")
         for book in books:
             print(f"- {book.title}")
+    except Author.DoesNotExist:
+        print(f"Author with name '{author_name}' does not exist.")
 
+# ✅ Query all books in a specific library
+def list_books_in_library(library_name):
+    try:
+        library = Library.objects.get(name=library_name)
+        books = library.book_set.all()
+        print(f"Books in library '{library_name}':")
+        for book in books:
+            print(f"- {book.title}")
     except Library.DoesNotExist:
         print(f"Library with name '{library_name}' does not exist.")
 
-# Example usage
-list_books_in_library("Central Library")
+# Example test runs
+list_books_by_author("George Orwell")
+list_books_in_library("Main Library")
