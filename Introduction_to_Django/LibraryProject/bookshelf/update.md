@@ -1,8 +1,10 @@
-# Delete Operation
-
-```python
-from bookshelf.models import Book
-
-# Delete a book with title '1984'
 book = Book.objects.get(title="1984")
-book.delete()
+book.title = "Nineteen Eighty-Four"
+book.save()
+
+# Verify the update
+updated_book = Book.objects.get(id=book.id)
+print(updated_book)
+
+# Output:
+# <Book: Nineteen Eighty-Four by George Orwell (1949)>
