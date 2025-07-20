@@ -1,7 +1,10 @@
-
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
-from .models import Library, Book
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.views import LoginView, LogoutView
+from .models import Library, Book, UserProfile
 
 # ✅ Class-based view
 class LibraryDetailView(DetailView):
@@ -9,33 +12,12 @@ class LibraryDetailView(DetailView):
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
 
-# ✅ Optional: Function-based view for listing all books (also required)
+# ✅ Function-based view for listing all books
 def list_books(request):
     books = Book.objects.all()
     return render(request, 'relationship_app/list_books.html', {'books': books})
 
-# from django.shortcuts import render, redirect
-# from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-# from django.contrib.auth import login, logout
-# from django.contrib.auth.decorators import login_required
-
-# # Register view
-# def register_view(request):
-#     if request.method == 'POST':
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             login(request, user)
-#             return redirect('home')  # Change 'home' to your landing page
-#     else:
-#         form = UserCreationForm()
-#     return render(request, 'relationship_app/register.html', {'form': form})
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
-from django.contrib.auth.views import LoginView, LogoutView
-
+# ✅ Register view
 def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -47,30 +29,26 @@ def register_view(request):
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
 
-
-# Login view
+# ✅ Login view
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('home')  # Change 'home' accordingly
+            return redirect('list_books')  # Or another landing page
     else:
         form = AuthenticationForm()
     return render(request, 'relationship_app/login.html', {'form': form})
 
-# Logout view
+# ✅ Logout view
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
         return redirect('login')  # Redirect to login after logout
     return render(request, 'relationship_app/logout.html')
 
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test, login_required
-from .models import UserProfile
-
+# ✅ Role-based access
 def role_required(role):
     def check_role(user):
         return hasattr(user, 'userprofile') and user.userprofile.role == role
@@ -79,14 +57,14 @@ def role_required(role):
 @login_required
 @role_required('Admin')
 def admin_view(request):
-    return render(request, 'admin_view.html')
+    return render(request, 'relationship_app/admin_view.html')
 
 @login_required
 @role_required('Librarian')
 def librarian_view(request):
-    return render(request, 'librarian_view.html')
+    return render(request, 'relationship_app/librarian_view.html')
 
 @login_required
 @role_required('Member')
 def member_view(request):
-    return render(request, 'member_view.html')
+    return render(request, 'relationship_app/member_view.html')
