@@ -1,15 +1,14 @@
-from relationship_app.models import Author, Book, Library, Librarian
+from relationship_app.models import Author, Book
 
-# Query all books by a specific author
-def books_by_author(author_name):
-    return Book.objects.filter(author__name=author_name)
+# Replace 'J.K. Rowling' with any author name you want to test
+author_name = "J.K. Rowling"
 
-# List all books in a library
-def books_in_library(library_name):
-    library = Library.objects.get(name=library_name)
-    return library.books.all()
+# Get the Author instance
+author = Author.objects.get(name=author_name)
 
-# Retrieve the librarian for a library
-def librarian_of_library(library_name):
-    library = Library.objects.get(name=library_name)
-    return library.librarian
+# Get all books by that author
+books_by_author = Book.objects.filter(author=author)
+
+# Optional: print for debugging
+for book in books_by_author:
+    print(book.title)
