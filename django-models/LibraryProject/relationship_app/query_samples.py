@@ -11,11 +11,11 @@ def list_books_by_author(author_name):
     except Author.DoesNotExist:
         print(f"Author with name '{author_name}' does not exist.")
 
-# ✅ Query all books in a specific library
+# ✅ Query all books in a specific library using `books.all()`
 def list_books_in_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
-        books = library.book_set.all()
+        books = library.books.all()  # <- uses related_name 'books'
         print(f"Books in library '{library_name}':")
         for book in books:
             print(f"- {book.title}")
