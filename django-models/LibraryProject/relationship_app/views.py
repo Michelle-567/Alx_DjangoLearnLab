@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import Library, Book, UserProfile
 
+
 # Class-based view for a specific Library
 class LibraryDetailView(DetailView):
     model = Library
