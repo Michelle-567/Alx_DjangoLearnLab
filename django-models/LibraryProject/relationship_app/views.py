@@ -66,3 +66,27 @@ def logout_view(request):
         logout(request)
         return redirect('login')  # Redirect to login after logout
     return render(request, 'relationship_app/logout.html')
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import user_passes_test, login_required
+from .models import UserProfile
+
+def role_required(role):
+    def check_role(user):
+        return hasattr(user, 'userprofile') and user.userprofile.role == role
+    return user_passes_test(check_role)
+
+@login_required
+@role_required('Admin')
+def admin_view(request):
+    return render(request, 'admin_view.html')
+
+@login_required
+@role_required('Librarian')
+def librarian_view(request):
+    return render(request, 'librarian_view.html')
+
+@login_required
+@role_required('Member')
+def member_view(request):
+    return render(request, 'member_view.html')

@@ -26,5 +26,10 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     
     # Other views...
-    path('', views.list_books, name='list_books'),  # Replace with your actual view
+    path('', views.list_books, name='list_books'),  # Replace with your actual 
+    
+    path('admin-role/', views.admin_view, name='admin_view'),
+    path('librarian-role/', views.librarian_view, name='librarian_view'),
+    path('member-role/', views.member_view, name='member_view'),
 ]
+
