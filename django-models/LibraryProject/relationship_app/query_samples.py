@@ -1,27 +1,18 @@
-from relationship_app.models import Author, Book, Library
+from .models import Author, Book, Library, Librarian
 
-# ✅ Query all books by a specific author
-def list_books_by_author(author_name):
-    try:
-        author = Author.objects.get(name=author_name)
-        books = Book.objects.filter(author=author)
-        print(f"Books by '{author_name}':")
-        for book in books:
-            print(f"- {book.title}")
-    except Author.DoesNotExist:
-        print(f"Author with name '{author_name}' does not exist.")
+def get_books_by_author(author_name):
+    author = Author.objects.get(name=author_name)
+    return Book.objects.filter(author=author)
 
-# ✅ Query all books in a specific library using `books.all()`
-def list_books_in_library(library_name):
-    try:
-        library = Library.objects.get(name=library_name)
-        books = library.books.all()  # <- uses related_name 'books'
-        print(f"Books in library '{library_name}':")
-        for book in books:
-            print(f"- {book.title}")
-    except Library.DoesNotExist:
-        print(f"Library with name '{library_name}' does not exist.")
+def get_books_in_library(library_name):
+    library = Library.objects.get(name=library_name)
+    return library.books.all()
 
-# Example test runs
-list_books_by_author("George Orwell")
-list_books_in_library("Main Library")
+def get_librarian_for_library(library_name):
+    library = Library.objects.get(name=library_name)
+    return Librarian.objects.get(library=library)
+
+
+# # Example test runs
+# list_books_by_author("George Orwell")
+# list_books_in_library("Main Library")
