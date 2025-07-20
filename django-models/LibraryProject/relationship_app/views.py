@@ -6,18 +6,18 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import Library, Book, UserProfile
 
-# ✅ Class-based view
+# Class-based view
 class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
 
-# ✅ Function-based view for listing all books
+# Function-based view for listing all books
 def list_books(request):
     books = Book.objects.all()
     return render(request, 'relationship_app/list_books.html', {'books': books})
 
-# ✅ Register view
+# Register view
 def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
