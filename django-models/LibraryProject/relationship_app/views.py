@@ -14,22 +14,39 @@ def list_books(request):
     books = Book.objects.all()
     return render(request, 'relationship_app/list_books.html', {'books': books})
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
+# from django.shortcuts import render, redirect
+# from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+# from django.contrib.auth import login, logout
+# from django.contrib.auth.decorators import login_required
 
-# Register view
+# # Register view
+# def register_view(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             return redirect('home')  # Change 'home' to your landing page
+#     else:
+#         form = UserCreationForm()
+#     return render(request, 'relationship_app/register.html', {'form': form})
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.contrib.auth.views import LoginView, LogoutView
+
 def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)
-            return redirect('home')  # Change 'home' to your landing page
+            login(request, user)  # Automatically log the user in
+            return redirect('list_books')  # Redirect after successful registration
     else:
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
+
 
 # Login view
 def login_view(request):
