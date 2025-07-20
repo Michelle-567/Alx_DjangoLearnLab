@@ -1,4 +1,7 @@
 
-# Retrieve a book by its primary key
-book = Book.objects.get(pk=1)
+# Retrieve Operation
+
+```python
+# Retrieve a book with title '1984'
+book = Book.objects.get(title="1984")
 print(book.title)
