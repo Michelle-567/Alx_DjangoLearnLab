@@ -68,3 +68,28 @@ def librarian_view(request):
 @role_required('Member')
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+
+from django.contrib.auth.decorators import user_passes_test
+from django.shortcuts import render
+
+def is_member(user):
+    return user.groups.filter(name='Member').exists()
+
+def is_librarian(user):
+    return user.groups.filter(name='Librarian').exists()
+
+def is_admin(user):
+    return user.groups.filter(name='Admin').exists()
+
+@user_passes_test(is_member)
+def member_view(request):
+    return render(request, 'relationship_app/member_view.html')
+
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return render(request, 'relationship_app/librarian_view.html')
+
+@user_passes_test(is_admin)
+def admin_view(request):
+    return render(request, 'relationship_app/admin_view.html')
