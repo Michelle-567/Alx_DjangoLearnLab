@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 from django.db import models
 
 class Book(models.Model):
@@ -9,3 +8,4 @@ class Book(models.Model):
 
     def __str__(self):
         return f"{self.title} by {self.author}"
+# Create your models here.
