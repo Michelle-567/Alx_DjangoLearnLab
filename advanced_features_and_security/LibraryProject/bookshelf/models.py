@@ -44,7 +44,7 @@ class Book(models.Model):
 
 from django.db import models
 
-class Article(models.Model):
+class Book(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
 

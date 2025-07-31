@@ -133,3 +133,25 @@ LOGOUT_REDIRECT_URL = '/login/'
 STATIC_URL = '/static/'
 
 # AUTH_USER_MODEL = 'bookshelf.CustomUser'
+DEBUG = False  # Ensure this is False in production
+
+# Security Headers
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Use HTTPS cookies
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+
+INSTALLED_APPS += ['csp']
+
+MIDDLEWARE += [
+    'csp.middleware.CSPMiddleware',
+]
+
+# Define your policy
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'", 'https://trusted.cdn.com')  # Adjust to your needs
+CSP_STYLE_SRC = ("'self'", 'https://trusted.cdn.com')
