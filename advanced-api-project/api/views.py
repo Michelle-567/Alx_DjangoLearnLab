@@ -42,12 +42,35 @@ class BookRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Book
+from django_filters.rest_framework import DjangoFilterBackend
 
 # List all books
 class BookListView(ListView):
     model = Book
     template_name = "book_list.html"
     context_object_name = "books"
+
+from rest_framework import generics, filters
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Book
+from .serializers import BookSerializer
+
+class BookListView(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+    # Add filtering, searching, and ordering
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    # Filtering by fields
+    filterset_fields = ['title', 'author', 'publication_year']
+
+    # Searching by text fields
+    search_fields = ['title', 'author']
+
+    # Ordering
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']  # default ordering
 
 
 # Retrieve details of a single book

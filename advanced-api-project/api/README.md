@@ -18,3 +18,7 @@ Directory: **advanced-api-project**
    git clone https://github.com/<your-username>/Alx_DjangoLearnLab.git
    cd Alx_DjangoLearnLab/advanced-api-project
 
+# BookListView now supports:
+# - Filtering: /api/books/?author=John&publication_year=2020
+# - Searching: /api/books/?search=Harry
+# - Ordering: /api/books/?ordering=-publication_year
