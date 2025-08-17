@@ -38,67 +38,42 @@ class BookRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         return [permissions.IsAuthenticated()]
 
 
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
-from rest_framework import generics, permissions
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from .models import Book
-from .serializers import BookSerializer
 
-# DRF Views
-
-# List all books / create new one
-class BookListView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
-
-# Retrieve a single book
-class BookDetailView(generics.RetrieveAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny]
-
-# Update a book
-class BookUpdateView(generics.UpdateAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-# Delete a book
-class BookDeleteView(generics.DestroyAPIView):
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-# Django Class-Based Views (to satisfy the "ListView", "DetailView", etc. requirement)
-
-class BookListPageView(ListView):
+# List all books
+class BookListView(ListView):
     model = Book
     template_name = "book_list.html"
     context_object_name = "books"
 
 
-class BookDetailPageView(DetailView):
+# Retrieve details of a single book
+class BookDetailView(DetailView):
     model = Book
     template_name = "book_detail.html"
     context_object_name = "book"
 
 
-class BookCreatePageView(CreateView):
+# Create a new book
+class BookCreateView(CreateView):
     model = Book
     fields = ["title", "author", "publication_year"]
     template_name = "book_form.html"
-    success_url = "/books/"
+    success_url = reverse_lazy("book-list")
 
 
-class BookUpdatePageView(UpdateView):
+# Update an existing book
+class BookUpdateView(UpdateView):
     model = Book
     fields = ["title", "author", "publication_year"]
     template_name = "book_form.html"
-    success_url = "/books/"
+    success_url = reverse_lazy("book-list")
 
 
-class BookDeletePageView(DeleteView):
+# Delete a book
+class BookDeleteView(DeleteView):
     model = Book
     template_name = "book_confirm_delete.html"
-    success_url = "/books/"
+    success_url = reverse_lazy("book-list")
