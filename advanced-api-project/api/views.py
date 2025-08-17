@@ -1,6 +1,7 @@
 from rest_framework import generics, permissions
 from .models import Book
 from .serializers import BookSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 
 class BookListCreateView(generics.ListCreateAPIView):
@@ -54,6 +55,8 @@ class BookDetailView(DetailView):
     model = Book
     template_name = "book_detail.html"
     context_object_name = "book"
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 
 # Create a new book
@@ -62,6 +65,8 @@ class BookCreateView(CreateView):
     fields = ["title", "author", "publication_year"]
     template_name = "book_form.html"
     success_url = reverse_lazy("book-list")
+    permission_classes = [IsAuthenticated]
+
 
 
 # Update an existing book
@@ -70,6 +75,8 @@ class BookUpdateView(UpdateView):
     fields = ["title", "author", "publication_year"]
     template_name = "book_form.html"
     success_url = reverse_lazy("book-list")
+    permission_classes = [IsAuthenticated]
+
 
 
 # Delete a book
@@ -77,3 +84,5 @@ class BookDeleteView(DeleteView):
     model = Book
     template_name = "book_confirm_delete.html"
     success_url = reverse_lazy("book-list")
+    permission_classes = [IsAuthenticated]
+
