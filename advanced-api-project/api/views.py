@@ -42,11 +42,13 @@ from rest_framework import generics, permissions
 from .models import Book
 from .serializers import BookSerializer
 
-# List all books / create new one
-class BookListView(generics.ListCreateAPIView):
+
+# List all books / create a new one
+class BookListCreateView(generics.ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.AllowAny]
+
 
 # Retrieve a single book
 class BookDetailView(generics.RetrieveAPIView):
@@ -54,11 +56,13 @@ class BookDetailView(generics.RetrieveAPIView):
     serializer_class = BookSerializer
     permission_classes = [permissions.AllowAny]
 
+
 # Update a book
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticated]
+
 
 # Delete a book
 class BookDeleteView(generics.DestroyAPIView):
