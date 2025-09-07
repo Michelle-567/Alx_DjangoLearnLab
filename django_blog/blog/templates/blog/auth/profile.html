@@ -1,0 +1,26 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Your Profile | Django Blog{% endblock %}
+
+{% block content %}
+<h1>Your Profile</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ pform.non_field_errors }}
+    <div>
+        <label>Bio</label>
+        {{ pform.bio.errors }} {{ pform.bio }}
+    </div>
+    <div>
+        <label>Avatar</label>
+        {{ pform.avatar.errors }} {{ pform.avatar }}
+    </div>
+    <button type="submit">Save changes</button>
+</form>
+
+{% if user.profile.avatar %}
+<p>Current avatar:</p>
+<img src="{{ user.profile.avatar.url }}" alt="Avatar" style="max-width:150px;">
+{% endif %}
+{% endblock %}
