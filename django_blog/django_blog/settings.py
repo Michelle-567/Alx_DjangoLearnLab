@@ -134,5 +134,15 @@ DATABASES = {
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'blog_db',
+        'USER': 'blog_user',
+        'PASSWORD': 'password123',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 
